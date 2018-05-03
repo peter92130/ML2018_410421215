@@ -1,5 +1,6 @@
 from PIL import Image
 import numpy as np
+import scipy.misc
 
 key1    = Image.open("key1.png")
 key2    = Image.open("key2.png")
@@ -24,9 +25,9 @@ w = np.array([0,0,0])
 A = 0.00001
 
 maxlimit = 10
-w0 = 0
-w1 = 0
-w2 = 0
+w0 = 1
+w1 = 1
+w2 = 1
 
 epoch = 1
 while epoch < maxlimit and abs(w[0] - w0) > 0.00001 and abs(w[1] - w1) > 0.00001 and abs(w[2] - w2) > 0.00001:
@@ -44,3 +45,13 @@ while epoch < maxlimit and abs(w[0] - w0) > 0.00001 and abs(w[1] - w1) > 0.00001
     epoch += 1
 
 
+out = np.zeros((H,W),int)
+
+for y in range(H):
+    for x in range(W):
+        out[y][x] = (Eprime.getpixel((x,y)) - w[1] *key1.getpixel((x,y)) -w[2] * key2.getpixel((x,y)))/w[0]
+        
+        
+    
+
+scipy.misc.imsave('output.jpg', out)
